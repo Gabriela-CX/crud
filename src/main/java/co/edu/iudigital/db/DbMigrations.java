@@ -1,26 +1,28 @@
 package co.edu.iudigital.db;
 
+import javax.swing.*;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 public class DbMigrations {
 
     private DbConfig dbConfig;
     private Connection connection;
+    private PreparedStatement pst;
+
 
     public DbMigrations(){
         this.dbConfig = new DbConfig();
         this.connection = dbConfig.connect();
     }
 
-    public void init(){
-        this.tableProducts();
-    }
-    public void tableProducts(){
+    public void insertDataIntoTableClient(){
         try{
             Statement statement = connection.createStatement();
-            String query = "CREATE TABLE products" +
-                    "(id INT NOT NULL PRIMARY KEY, name varchar(15), price float)";
+            String query = "INSERT INTO clientes" +
+                    "(cedulacliente, nombre, direccion, telefono) VALUES(1087435, 'Sandra', 'Mordor', '2324')";
+            System.out.println("Cliente guardado");
             statement.execute(query);
             statement.close();
             connection.close();
@@ -29,41 +31,26 @@ public class DbMigrations {
         }
     }
 
-
-    public void insertDataIntoTableProducts(){
+    public void updateDataIntoTableClient(){
         try{
             Statement statement = connection.createStatement();
-            String query = "INSERT INTO products" +
-                    "(id, name, price) VALUES(1, 'Monitor', 2500000)";
+            String query = "UPDATE clientes SET nombre = 'Gabriela' WHERE cedula = 123424";
             statement.execute(query);
             statement.close();
-            connection.close();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    public void updateDataIntoTableProducts(){
+    public void deleteDataIntoTableClient(){
         try{
             Statement statement = connection.createStatement();
-            String query = "UPDATE products SET name = 'Laptop' WHERE id = 1";
+            String query = "DELETE FROM clientes WHERE nombre = 'ewrgsdfg'";
             statement.execute(query);
             statement.close();
-            connection.close();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    public void deleteDataIntoTableProducts(){
-        try{
-            Statement statement = connection.createStatement();
-            String query = "DELETE FROM products WHERE name = 'Laptop'";
-            statement.execute(query);
-            statement.close();
-            connection.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
 }
